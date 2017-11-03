@@ -38,15 +38,6 @@ matrix:
             - ubuntu-toolchain-r-test
           packages: ['clang-5.0']
           
-    - os: osx
-      osx_image: xcode8.3
-      compiler: clang
-      env: CXX_EVAL="clang++" CC_EVAL="clang" BUILD_TYPE='Debug'
-
-    - os: osx
-      osx_image: xcode8.3
-      compiler: clang
-      env: CXX_EVAL="clang++" CC_EVAL="clang" BUILD_TYPE='Release'
 
 
 before_install:
@@ -62,8 +53,6 @@ install:
       CMAKE_URL="https://cmake.org/files/v3.9/cmake-3.9.4-Linux-x86_64.tar.gz"
       mkdir cmake && travis_retry wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C cmake
       export PATH=${DEPS_DIR}/cmake/bin:${PATH}
-    elif [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
-      which cmake || brew install cmake
     fi
 before_script:
   - which $CXX
@@ -73,4 +62,3 @@ before_script:
 script:
 - cmake --build _builds
 - cmake --build _builds --target test -- ARGS=--verbose
-
