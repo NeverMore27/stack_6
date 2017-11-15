@@ -111,25 +111,27 @@ template <typename T>
 auto stack<T>::try_pop() -> std::shared_ptr<T>
 {
 	std::lock_guard<std::mutex> lock(mutex_);
-	if (count_ == 0)
+
+	if (count_==0)
 	{
 		return nullptr;
 	}
-	--count_;
-	auto ar = std::make_shared<T>(array_[count_]);
-	return ar;
+	count_--;
+	return std::make_shared<T>(array_[count_]);
 }
+
+
 template <typename T>
 auto stack<T>::wait_and_pop() -> std::shared_ptr<T>
 {
 	std::unique_lock<std::mutex> locker(mutex_);
-	while (!size())
+
+	while (!count_)
 	{
 		cond_.wait(locker);
 	}
 	count_--;
-	auto ar = std::make_shared<T>(array_[count_]);
-	return ar;
+	return std::make_shared<T>(array_[count_]);
 }
 template <typename T>
 size_t stack<T>::size() const noexcept
