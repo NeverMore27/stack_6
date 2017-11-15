@@ -15,9 +15,8 @@ SCENARIO("push")
 	Stack.push(7);
 	Stack.push(12);
 	auto sp =Stack.try_pop();
-	bool d=(sp==12);
 	REQUIRE(Stack.size() == 2);
-	REQUIRE(d);
+	REQUIRE(*sp==12);
 }
 SCENARIO("count and size")
 {
