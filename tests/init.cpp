@@ -16,7 +16,7 @@ SCENARIO("push")
 	s.push(12);
 	s.push(78);
 	auto sp =s.try_pop();
-	REQUIRE(s.count() == 3);
+	REQUIRE(s.size() == 3);
 	REQUIRE(*sp==78);
 }
 SCENARIO("count and size")
