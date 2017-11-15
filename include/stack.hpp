@@ -125,7 +125,7 @@ auto stack<T>::wait_and_pop() -> std::shared_ptr<T>
 	std::unique_lock<std::mutex> locker(mutex_);
 	while (!size())
 	{
-		cond_.wait(lacker);
+		cond_.wait(locker);
 	}
 	auto ar = std::make_shared<T>(array_[count_-1]);
 	--count_;
