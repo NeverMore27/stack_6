@@ -22,7 +22,7 @@ SCENARIO("push")
 SCENARIO("count and size")
 {
 	stack<int> Stack;
-	auto sp =Stack.try_pop();
+	auto sp= std::make_shared<int>(Stack.try_pop());
 	REQUIRE(sp == nullptr);
 }
 SCENARIO("count and size")
