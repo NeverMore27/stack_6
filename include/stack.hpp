@@ -115,16 +115,19 @@ auto stack<T>::try_pop() -> std::shared_ptr<T>
 	{
 		return nullptr;
 	}
-		auto ar = std::make_shared<int>(array_[count_ - 1]);
+	auto ar = std::make_shared<int>(array_[count_ - 1]);
 	--count_;
 	return ar;
 }
 template <typename T>
 auto stack<T>::wait_and_pop() -> std::shared_ptr<T>
 {
-	std::unique_lock<std::mutex> loker(mutex_);
-	cond_.wait(loker);
-	auto ar = std::make_shared<int>(array_[count_ - 1]);
+	std::unique_lock<std::mutex> lock(mutex_);
+	while (!size())
+	{
+		cond_.wait(mutex_);
+	}
+	auto ar = std::make_shared<int>(array_[count_-1]);
 	--count_;
 	return ar;
 }
