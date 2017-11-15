@@ -14,7 +14,7 @@ SCENARIO("push")
 	Stack.push(5);
 	Stack.push(7);
 	Stack.push(12);
-	std::make_shared<int>(Stack.try_pop());
+	auto sp=std::make_shared<int>(Stack.try_pop());
 	REQUIRE(Stack.size() == 2);
 	//REQUIRE(*sp==12);
 }
