@@ -22,7 +22,7 @@ SCENARIO("push")
 SCENARIO("count and size")
 {
 	stack<int> Stack;
-	int* sp =Stack.try_pop();
+	auto sp =Stack.try_pop();
 	REQUIRE(sp == nullptr);
 }
 SCENARIO("count and size")
