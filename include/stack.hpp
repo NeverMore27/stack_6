@@ -82,7 +82,7 @@ stack<T>& stack<T>:: operator =(const stack<T>&object) noexcept
 template <typename T>
 void stack<T>::push(T const &value)
 {
-	std::unique_lock<std::mutex> lock(mutex_);
+	std::lock_guard<std::mutex> lock(mutex_);
 	if (array_size_ == count_)
 	{
 		size_t array_size = array_size_ == 0 ? 1 : array_size_ * 2;
