@@ -115,7 +115,7 @@ auto stack<T>::try_pop() -> std::shared_ptr<T>
 	{
 		return nullptr;
 	}
-	auto ar = std::make_shared<int>(array_[count_ - 1]);
+	auto ar = std::make_shared<T>(array_[count_ - 1]);
 	--count_;
 	return ar;
 }
@@ -127,7 +127,7 @@ auto stack<T>::wait_and_pop() -> std::shared_ptr<T>
 	{
 		cond_.wait(mutex_);
 	}
-	auto ar = std::make_shared<int>(array_[count_-1]);
+	auto ar = std::make_shared<T>(array_[count_-1]);
 	--count_;
 	return ar;
 }
