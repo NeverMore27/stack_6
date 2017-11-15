@@ -10,13 +10,14 @@ SCENARIO("ini")
 	
 SCENARIO("push")
 {
-	stack<int> Stack;
-	Stack.push(5);
-	Stack.push(7);
-	Stack.push(12);
-	auto sp=Stack.try_pop();
-	REQUIRE(Stack.size() == 2);
-	REQUIRE(*sp==12);
+	stack<int> s;
+	s.push(4);
+	s.push(5);
+	s.push(12);
+	s.push(78);
+	auto sp =s.try_pop();
+	REQUIRE(s.count() == 3);
+	REQUIRE(*sp==78);
 }
 SCENARIO("count and size")
 {
