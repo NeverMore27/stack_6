@@ -14,12 +14,17 @@ SCENARIO("push")
 	Stack.push(5);
 	Stack.push(7);
 	Stack.push(12);
-	int sp =*Stack.pop();
+	int sp =*Stack.try_pop();
 	bool d=(sp==12);
 	REQUIRE(Stack.size() == 2);
 	REQUIRE(d);
 }
-
+SCENARIO("count and size")
+{
+	stack<int> Stack;
+	int* sp =Stack.try_pop();
+	REQUIRE(sp == nullptr);
+}
 SCENARIO("count and size")
 {
 	stack<int> Stack;
