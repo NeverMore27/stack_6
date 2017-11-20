@@ -116,7 +116,7 @@ auto stack<T>::try_pop() -> std::shared_ptr<T>
 	{
 		return nullptr;
 	}
-	auto ar=std::make_shared<T>(array_[count_-1])
+	auto ar=std::make_shared<T>(array_[count_-1]);
 	count_--;
 	return ar;
 }
