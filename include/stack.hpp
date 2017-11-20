@@ -18,7 +18,7 @@ public:
 	void push(T const &) /*strong*/;
 	auto try_pop()->std::shared_ptr<T>;
 	auto wait_and_pop()->std::shared_ptr<T>;
-	size_t size() const /*noexcept*/ noexcept;
+	size_t size() const /*strong*/;
 	bool empty() const /*noexcept*/ noexcept;
 private:
 	mutable std::mutex mutex_;
