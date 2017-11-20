@@ -135,7 +135,7 @@ auto stack<T>::wait_and_pop() -> std::shared_ptr<T>
 	return std::make_shared<T>(array_[count_]);
 }
 template <typename T>
-size_t stack<T>::size() const noexcept
+size_t stack<T>::size() const 
 {
 	std::lock_guard<std::mutex> lock(mutex_);
 
