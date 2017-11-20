@@ -19,12 +19,6 @@ SCENARIO("push")
 	REQUIRE(s.size() == 3);
 	REQUIRE(*sp==78);
 }
-SCENARIO("null")
-{
-	stack<int> s;
-	auto sp =s.pop();
-	REQUIRE(sp==nullptr);
-}
 SCENARIO("count and size")
 {
 	stack<int> Stack;
