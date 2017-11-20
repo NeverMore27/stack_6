@@ -15,14 +15,14 @@ SCENARIO("push")
 	s.push(5);
 	s.push(12);
 	s.push(78);
-	auto sp =s.try_pop();
+	auto sp =s.pop();
 	REQUIRE(s.size() == 3);
 	REQUIRE(*sp==78);
 }
 SCENARIO("null")
 {
 	stack<int> s;
-	auto sp =s.try_pop();
+	auto sp =s.pop();
 	REQUIRE(sp==nullptr);
 }
 SCENARIO("count and size")
