@@ -36,9 +36,7 @@ SCENARIO("init list")
     s = v.pop_back();
     REQUIRE(s == 2);
     REQUIRE(v.count() == 1);
-    s = v.pop_back();
     REQUIRE(s == 1);
-    REQUIRE(!v.empty());
 }
 
 SCENARIO("push") 
