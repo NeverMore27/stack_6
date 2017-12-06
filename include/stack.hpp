@@ -1,126 +1,243 @@
 #include <iostream>
-#include <string>
-#include <mutex>
-#include <memory>
 
-template <typename T>
-class stack
-{
-public:
-	stack() /*noexcept*/ noexcept; 
-	~stack()  /*noexcept*/ noexcept;
-	stack(const stack<T>&) /*strong*/;
-	stack<T>& operator =(const stack<T>&) noexcept;
-	void push(T const &) /*strong*/;
-	auto pop() -> std::shared_ptr<T>;
-	size_t size() const /*noexcept*/ noexcept;
-	bool empty() const /*noexcept*/ noexcept;
+
+template <class Ty>
+class forward_list {
 private:
-	mutable std::mutex mutex_;
-	T * array_;
-	size_t array_size_;
+	struct node
+	{
+		Ty data;
+		node* next;
+		node() : next(nullptr) {};
+		node(const Ty& t) : data{ t }, next{ nullptr } {};
+		node(Ty&& t) : data{ std::move(t) }, next{ nullptr } {};
+	};
+	node *head;
 	size_t count_;
-	void swap(stack<T>&) /*noexcept*/ noexcept;
+	bool isEqual(node* head1, const node* head2);
+	
+public:
+	forward_list() : count_{ 0 }, head{ nullptr } {};
+	forward_list(const forward_list& other);
+	forward_list(forward_list&& other);
+	forward_list& operator=(const forward_list& other);
+	forward_list& operator=(forward_list&& other);
+	~forward_list();
+	void clear();
+	void push_back(const Ty& val);
+	void push_front(const Ty &val);
+	template<typename Args>
+	void emplace_back(Args&& val);
+	template<typename Args>
+	void emplace_front(Args &&val);
+	bool empty();
+	Ty pop_back();
+	Ty pop_front();
+	size_t count();
+	bool operator ==(const forward_list& other);
+	void swap(forward_list& other);
+	void show()
+	 {
+		node *temp = head;
+		while (temp != nullptr)
+			{
+			std::cout << temp->data << " ";
+			temp = temp->next;
+			}
+	};
+	forward_list(std::initializer_list<Ty> list);
 };
-
-template <typename T>
-void stack<T>::swap(stack<T>& object) noexcept
-{		
-	std::lock(mutex_, object.mutex_); 
-	std::swap(object.array_size_, array_size_);
-	std::swap(count_, object.count_);
-	std::swap(object.array_, array_);
-	mutex_.unlock();
-	object.mutex_.unlock();
-}
-
-template <typename T>
-stack<T>::stack() noexcept: count_{0}, array_size_{0}, array_{nullptr} 
+template <class Ty>
+forward_list<Ty>::forward_list(const forward_list& other)
 {
-}
-
-template <typename T>
-stack<T>::~stack() noexcept
-{
-	delete[] array_;
-}
-
-template <typename T>
-stack<T>::stack(const stack& object)
-{
-	std::lock_guard<std::mutex> lock(object.mutex_);
-	array_size_ = object.array_size_;
-	count_ = object.count_;
-	array_= new T[count_];
-	try 
+	head = nullptr; count_ = 0;
+	node *pTemp = other.head;
+	while (pTemp != nullptr)
 	{
-		std::copy(object.array_,object.array_+count_, array_);
+		this->push_back(pTemp->data);
+		pTemp = pTemp->next;
 	}
-	catch (...)
-	{ 
-      		delete[] array_;
-		throw;
+}
+template <class Ty>
+bool forward_list<Ty>::isEqual(const node* head1, const node* head2)
+{
+	return (head1 && head2 ? head1->data == head2->data&&isEqual(head2->next, head1->next) : !head2 && !head1);
+}
+
+template <class Ty>
+bool forward_list<Ty>:: operator ==(const forward_list& other)
+{
+	return isEqual(head, other.head);
+}
+
+template <class Ty>
+forward_list<Ty>::forward_list(forward_list&& other)
+{
+	head = nullptr; count_ = 0;
+	node *pTemp = other.head;
+	while (pTemp != nullptr)
+	{
+		this->emplace_back(pTemp->data);
+		pTemp = pTemp->next;
 	}
 }
 
-template <typename T>
-stack<T>& stack<T>:: operator =(const stack<T>&object) noexcept
-{	
-	if (this != &object)
+template <class Ty>
+void forward_list<Ty>::swap(forward_list& other)
+{
+	std::swap(count_, other.count_);
+	std::swap(head, other.head);
+}
+
+template <class Ty>
+forward_list<Ty>& forward_list<Ty>:: operator=(const forward_list& other)
+{
+	if (this != &other)
 	{
-		stack{object}.swap(*this);
+		forward_list{ other }.swap(*this);
 	}
 	return *this;
 }
 
-template <typename T>
-void stack<T>::push(T const &value)
+template <class Ty>
+forward_list<Ty>& forward_list<Ty>:: operator=(forward_list&& other)
 {
-	std::lock_guard<std::mutex> lock(mutex_);
-	if (array_size_ == count_)
+	if (this != &other)
 	{
-		size_t array_size = array_size_ == 0 ? 1 : array_size_ * 2;
-		T *ptr = new T [array_size];
-		try 
-		{
-			std::copy(array_, array_ + count_, ptr);
-		}
-		catch (...)
-		{  
-      			delete[] ptr;
-			throw;
-		}
-		
-		array_size_=array_size;
-		delete[] array_;
-		array_ = ptr;
+		forward_list{ other }.swap(*this);
 	}
-	
-	array_[count_] = value;
-	++count_;
+	return *this;
 }
 
-template <typename T>
-auto stack<T>::pop() -> std::shared_ptr<T> 
+template <class Ty>
+bool forward_list<Ty>::empty()
 {
-	std::lock_guard<std::mutex> lock(mutex_);
-	if (count_==0) throw ("Stack is empty");
-	auto ar = std::make_shared<int>(array_[count_-1]);
-	--count_;
-	return ar;
+	return (count_ == 0);
 }
 
-template <typename T>
-size_t stack<T>::size() const noexcept
+template <class Ty>
+forward_list<Ty>::~forward_list()
 {
-	std::lock_guard<std::mutex> lock(mutex_);
+	clear();
+}
 
+template <class Ty>
+void forward_list<Ty>::clear()
+{
+	node *cur_ = head;
+	node *deleted_ = head;
+	while (deleted_ != nullptr)
+	{
+		cur_ = cur_->next;
+		delete deleted_;
+		deleted_ = cur_;
+	}
+	count_ = 0;
+	head = nullptr;
+}
+
+template <class Ty>
+void forward_list<Ty>::push_front(const Ty &val)
+{
+	node *tmp = new node;
+	tmp->data = val;
+	tmp->next = head;
+	head = tmp;
+	count_++;
+}
+
+template <class Ty>
+template<typename Args>
+void forward_list<Ty>::emplace_front(Args &&val)
+{
+	node *tmp = new node(std::forward<Args>(val));
+	tmp->next = head;
+	head = tmp;
+	count_++;
+}
+
+template <class Ty>
+void forward_list<Ty>::push_back(const Ty &val)
+{
+	node* front = head;
+	if (front != nullptr)
+	{
+		while (front->next != nullptr)
+		{
+			front = front->next;
+		}
+		front->next = new node(val);
+	}
+	else
+	{
+		front = new node(val);
+		head = front;
+	}
+	count_++;
+}
+
+template <class Ty>
+template<typename Args>
+void forward_list<Ty>::emplace_back(Args &&val)
+{
+	node* front = head;
+	if (front != nullptr)
+	{
+		while (front->next != nullptr)
+		{
+			front = front->next;
+		}
+		front->next = new node(std::forward<Args>(val));
+	}
+	else
+	{
+		front = new node(std::forward<Args>(val));
+		head = front;
+	}
+	count_++;
+}
+
+template <class Ty>
+size_t forward_list<Ty>::count()
+{
 	return count_;
 }
 
-template <typename T>
-bool stack<T>::empty() const noexcept
-{	
-	std::lock_guard<std::mutex> lock(mutex_);
-	return count_==0;
+template <class Ty>
+Ty forward_list<Ty>::pop_front()
+{
+	node *tmp;
+	tmp = head->next;
+	Ty r = head->data;
+	delete head;
+	head = tmp;
+	--count_;
+	return r;
+}
+
+template <class Ty>
+Ty forward_list<Ty>::pop_back()
+{
+	Ty r;
+	node* front = head;
+	while (front->next->next != nullptr)
+	{
+		front = front->next;
+	}
+	r = front->next->data;
+	delete front->next;
+	front->next = nullptr;
+	--count_;
+	return r;
+}
+
+template <class Ty>
+forward_list<Ty>::forward_list(std::initializer_list<Ty> list)
+{
+	head = nullptr;
+	count_ = 0;
+	for (auto& item : list)
+	{
+		emplace_back(item);
+	}
 }
