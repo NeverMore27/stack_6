@@ -36,7 +36,6 @@ SCENARIO("init list")
     s = v.pop_back();
     REQUIRE(s == 2);
     REQUIRE(v.count() == 1);
-    REQUIRE(s == 1);
 }
 
 SCENARIO("push") 
@@ -63,7 +62,7 @@ SCENARIO("clear")
 SCENARIO("copy") 
 {
    forward_list<int> s = {1, 2, 5, 9};
-   forward_list<int> m =s;
+   forward_list<int> m = s;
    REQUIRE((m == s));
 }
 SCENARIO("back") 
@@ -88,9 +87,9 @@ SCENARIO("front")
    m.push_front(1);
    m.push_front(2);
    m.push_front(4);
-   m.emplace_front(1);
-   m.emplace_front(2);
-   m.emplace_front(4);
+   m2.emplace_front(1);
+   m2.emplace_front(2);
+   m2.emplace_front(4);
    REQUIRE((m == s));
    REQUIRE((m2 == s));
 }
