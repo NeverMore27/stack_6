@@ -59,7 +59,7 @@ forward_list<Ty>::forward_list(const forward_list& other)
 	}
 }
 template <class Ty>
-bool forward_list<Ty>::isEqual(const node* head1, const node* head2)
+bool forward_list<Ty>::isEqual( node* head1, const node* head2)
 {
 	return (head1 && head2 ? head1->data == head2->data&&isEqual(head2->next, head1->next) : !head2 && !head1);
 }
