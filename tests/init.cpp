@@ -73,9 +73,9 @@ SCENARIO("back")
    m.push_back(1);
    m.push_back(2);
    m.push_back(4);
-   m.emplace_back(1);
-   m.emplace_back(2);
-   m.emplace_back(4);
+   m2.emplace_back(1);
+   m2.emplace_back(2);
+   m2.emplace_back(4);
    REQUIRE((m == s));
    REQUIRE((m2 == s));
 }
