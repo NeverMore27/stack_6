@@ -93,7 +93,7 @@ SCENARIO("front")
    REQUIRE((m == s));
    REQUIRE((m2 == s));
 }
-SCENARIO("init") 
+SCENARIO("init1") 
 {
    	queue <int> m;
     REQUIRE(m.count()==0);
