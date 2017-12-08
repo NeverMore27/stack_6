@@ -99,7 +99,7 @@ SCENARIO("init")
     REQUIRE(m.count()==0);
 
 }
-
+/*
 SCENARIO("init list") 
 {
     queue <int> m={3, 4};
@@ -157,3 +157,4 @@ SCENARIO("copy")
    
 }
 
+*/
