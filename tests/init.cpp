@@ -93,3 +93,67 @@ SCENARIO("front")
    REQUIRE((m == s));
    REQUIRE((m2 == s));
 }
+SCENARIO("init") 
+{
+   	queue <int> m ;
+    REQUIRE(m.count()==0);
+
+}
+
+SCENARIO("init list") 
+{
+    queue <int> m={3, 4};
+    REQUIRE(m.count()==2);
+    int s = m.dequeue();
+    REQUIRE(m.count() == 1);
+    REQUIRE(s == 3);
+    s = m.dequeue();
+    REQUIRE(s == 4);
+    REQUIRE(v.count() == 0);
+}
+SCENARIO("pop") 
+{
+    queue <int> m={3, 4};
+    REQUIRE(m.count()==2);
+    int s = m.dequeue();
+    REQUIRE(m.count() == 1);
+    REQUIRE(s == 3);
+}
+
+SCENARIO("push") 
+{
+    queue <int> m={3, 4};
+    REQUIRE(m.count()==2);
+    m.enqueue(5);
+    REQUIRE(m.count() == 3);
+    m.dequeue();
+    m.dequeue();
+    int s = m.dequeue();
+    REQUIRE(s == 5);
+}
+ SCENARIO("move") 
+{
+   queue <int> l={3, 4};
+   queue <int> m =std:: move(l);
+   REQUIRE(m.count()==2);
+   int s = m.dequeue();
+   REQUIRE(m.count() == 1);
+   REQUIRE(s == 3);
+   s = m.dequeue();
+   REQUIRE(s == 4);
+   REQUIRE(v.count() == 0);
+ }
+SCENARIO("copy") 
+{
+    queue <int> l={3, 4};
+   queue <int> m =l;
+   REQUIRE(m.count()==2);
+   int s = m.dequeue();
+   REQUIRE(m.count() == 1);
+   REQUIRE(s == 3);
+   s = m.dequeue();
+   REQUIRE(s == 4);
+   REQUIRE(v.count() == 0);
+   
+}
+
