@@ -109,7 +109,7 @@ SCENARIO("init list")
     REQUIRE(s == 3);
     s = m.dequeue();
     REQUIRE(s == 4);
-    REQUIRE(v.count() == 0);
+    REQUIRE(m.count() == 0);
 }
 SCENARIO("pop") 
 {
@@ -141,7 +141,7 @@ SCENARIO("push")
    REQUIRE(s == 3);
    s = m.dequeue();
    REQUIRE(s == 4);
-   REQUIRE(v.count() == 0);
+   REQUIRE(m.count() == 0);
  }
 SCENARIO("copy") 
 {
@@ -153,7 +153,7 @@ SCENARIO("copy")
    REQUIRE(s == 3);
    s = m.dequeue();
    REQUIRE(s == 4);
-   REQUIRE(v.count() == 0);
+   REQUIRE(m.count() == 0);
    
 }
 
