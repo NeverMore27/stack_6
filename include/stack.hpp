@@ -284,7 +284,7 @@ queue<Ty>::queue(queue&& other)
 	while (!other_._items.empty())
 	{
 		
-		Ty _i = other_._items.pop_back();
+		Ty _i = other_._items.pop_front();
 		_items.emplace_back(_i);
 	}
 	
