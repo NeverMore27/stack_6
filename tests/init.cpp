@@ -93,13 +93,12 @@ SCENARIO("front")
    REQUIRE((m == s));
    REQUIRE((m2 == s));
 }
-SCENARIO("init") 
+/*SCENARIO("init") 
 {
    	queue <int> m ;
     REQUIRE(m.count()==0);
-
 }
-/*
+
 SCENARIO("init list") 
 {
     queue <int> m={3, 4};
